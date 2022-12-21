@@ -1,4 +1,4 @@
--- psql products < /Users/chris/Desktop/hackreactor/project-atelier-products-backend/database/schema.sql
+-- psql products < /Users/chris/Desktop/hackreactor/project-atelier-products-backend/server/database/schema.sql
 
 CREATE TABLE products (
   id INTEGER NOT NULL PRIMARY KEY,

@@ -10,30 +10,38 @@ CREATE TABLE products (
 );
 
 CREATE TABLE features (
-  id SERIAL PRIMARY KEY,
+  id INTEGER NOT NULL PRIMARY KEY,
+  product_id INTEGER NOT NULL REFERENCES products (id),
   feature TEXT,
   value TEXT
 );
 
 CREATE TABLE styles (
-  id SERIAL PRIMARY KEY,
+  id INTEGER NOT NULL PRIMARY KEY,
+  product_id INTEGER REFERENCES products (id),
   name TEXT,
-  original_price INTEGER NOT NULL,
   sale_price INTEGER,
-  default_style BOOLEAN,
-  product_id INTEGER REFERENCES products (id)
+  original_price INTEGER NOT NULL,
+  default_style BOOLEAN
 );
 
 CREATE TABLE photos (
-  id SERIAL PRIMARY KEY,
-  thumbnail_url TEXT,
+  id INTEGER NOT NULL PRIMARY KEY,
+  styles_id INTEGER REFERENCES styles (id),
   url TEXT,
-  styles_id INTEGER REFERENCES styles (id)
+  thumbnail_url TEXT
 );
 
 CREATE TABLE skus (
-  id SERIAL PRIMARY KEY,
-  quantity INTEGER,
+  id INTEGER NOT NULL PRIMARY KEY,
+  styles_id INTEGER REFERENCES styles(id),
   size TEXT,
-  styles_id INTEGER REFERENCES styles(id)
+  quantity INTEGER
 );
+
+CREATE TABLE cart (
+  id INTEGER NOT NULL PRIMARY KEY,
+  user_session INTEGER NOT NULL,
+  product_id INTEGER REFERENCES products (id),
+  active BOOLEAN
+)

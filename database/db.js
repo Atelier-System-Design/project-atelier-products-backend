@@ -1,6 +1,9 @@
 const path = require('path');
 require('dotenv').config({path: '../.env'});
-const { Client } = require('pg')
-const client = new Client({});
+const { Pool } = require('pg')
 
-client.connect();
+const pool = new Pool();
+
+module.exports = {
+  query: (text, params) => { return pool.query(text, params) }
+}

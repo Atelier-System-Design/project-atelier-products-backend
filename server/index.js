@@ -3,6 +3,7 @@ const express = require('express');
 const morgan = require('morgan');
 const app = express();
 const path = require('path');
+const db = require('./database/db.js')
 
 app.use(morgan());
 app.use(express.json());

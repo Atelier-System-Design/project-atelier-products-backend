@@ -1,8 +1,10 @@
 const path = require('path');
-require('dotenv').config({path: '../.env'});
+require('dotenv').config({path: '../../.env'});
 const { Pool } = require('pg')
 
-const pool = new Pool();
+const pool = new Pool({
+  database: 'products'
+});
 
 module.exports = {
   query: (text, params) => { return pool.query(text, params) }

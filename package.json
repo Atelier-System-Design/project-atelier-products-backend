@@ -29,6 +29,7 @@
     "mongoose": "^6.8.1",
     "morgan": "^1.10.0",
     "pg": "^8.8.0",
+    "pg-copy-streams": "^6.0.4",
     "pg-hstore": "^2.3.4",
     "postgres": "^3.3.2",
     "sequelize": "^6.28.0",

@@ -4,11 +4,7 @@ const csv = require('fast-csv');
 const db = require('./db.js');
 const copyFrom = require('pg-copy-streams').from;
 
-const productQueryText = 'INSERT INTO products (id, name, slogan, description, category, default_price) VALUES ($1, $2, $3, $4, $5, $6)';
-
-const featureQueryText = 'INSERT INTO features (id, product_id, feature, value) VALUES ($1, $2, $3, $4)';
-
-const dataLoader = (queryText, csvName) => {
+const loadDataByRow = (queryText, csvName) => {
   let stream = fs.createReadStream(path.join(__dirname, `../../data/${csvName}.csv`));
   let csvData = [];
   let csvStream = csv
@@ -18,24 +14,59 @@ const dataLoader = (queryText, csvName) => {
     })
     .on("end", function() {
       csvData.shift();
-      csvData.forEach((row) => {
-        db.query(queryText, row)
-          .catch((error) => console.log(error));
-      })
-      console.log('done');
+      for (let i = 0; i < csvData.length; i++) {
+        db.query(productQueryText, csvData[i])
+      };
     });
 
   stream.pipe(csvStream);
 }
 
-// dataLoader(productQueryText, 'testProducts');
-// dataLoader(featureQueryText, 'testFeatures');
-db.connect()
-  .then((client) => {
-    const stream = client.query(copyFrom('COPY products FROM STDIN CSV HEADER'))
-    const fileStream = fs.createReadStream(path.join(__dirname, `../../data/product.csv`))
-    fileStream.on('error', client.release)
-    stream.on('error', client.release)
-    stream.on('finish', client.release)
-    fileStream.pipe(stream)
+const copyFromCSV = (tablename, csvName, nullValues) => {
+  return new Promise((resolve, reject) => {
+    db.connect()
+    .then((client) => {
+      const stream = client.query(copyFrom(`COPY ${tablename} FROM STDIN CSV HEADER NULL as '${nullValues}'`))
+      const fileStream = fs.createReadStream(path.join(__dirname, `../../data/${csvName}.csv`))
+      fileStream.on('error', (error) => {
+        console.log(error);
+        client.release();
+      })
+      stream.on('error', (error) => {
+        console.log(error);
+        client.release();
+      })
+      stream.on('finish', () => {
+        console.log(`done copying ${tablename}` );
+        client.release();
+      })
+      fileStream.pipe(stream)
+        .on('finish', resolve)
+        .on('error', reject)
+    })
   })
+};
+
+const loadDatabase = () => {
+  copyFromCSV('products', 'product', 'null')
+  .then(() => {
+    return copyFromCSV('features', 'features', 'null');
+  })
+  .then(() => {
+    return copyFromCSV('styles', 'styles', 'null');
+  })
+  .then(() => {
+    return copyFromCSV('photos', 'photos', 'null');
+  })
+  .then(() => {
+    return copyFromCSV('skus', 'skus', 'null');
+  })
+  .then(() => {
+    return copyFromCSV('related', 'related', '0');
+  })
+  .then(() => {
+    console.log('Finished loading database');
+  })
+};
+
+// loadDatabase();

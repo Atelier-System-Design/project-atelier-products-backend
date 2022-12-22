@@ -39,9 +39,8 @@ CREATE TABLE skus (
   quantity INTEGER
 );
 
-CREATE TABLE cart (
+CREATE TABLE related (
   id INTEGER NOT NULL PRIMARY KEY,
-  user_session INTEGER NOT NULL,
-  product_id INTEGER REFERENCES products (id),
-  active BOOLEAN
-)
+  current_product_id INTEGER REFERENCES products (id),
+  related_product_id INTEGER REFERENCES products (id)
+);

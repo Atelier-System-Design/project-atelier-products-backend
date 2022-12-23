@@ -67,6 +67,7 @@ const loadDatabase = () => {
   .then(() => {
     console.log('Finished loading database');
   })
+  .catch((error) => console.log(error));
 };
 
 // loadDatabase();

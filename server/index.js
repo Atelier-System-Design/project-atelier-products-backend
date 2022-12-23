@@ -8,6 +8,10 @@ const db = require('./database/db.js')
 app.use(morgan());
 app.use(express.json());
 
+app.get('/', (req, res) => {
+  res.send('hi');
+});
+
 app.listen(process.env.PORT, (err) => {
   if (err) {
     console.log(err);

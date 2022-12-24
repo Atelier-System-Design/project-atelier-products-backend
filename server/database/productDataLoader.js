@@ -15,7 +15,7 @@ const loadDataByRow = (queryText, csvName) => {
     .on("end", function() {
       csvData.shift();
       for (let i = 0; i < csvData.length; i++) {
-        db.query(productQueryText, csvData[i])
+        db.query(queryText, csvData[i])
       };
     });
 
@@ -49,25 +49,25 @@ const copyFromCSV = (tablename, csvName, nullValues) => {
 
 const loadDatabase = () => {
   copyFromCSV('products', 'product', 'null')
-  .then(() => {
-    return copyFromCSV('features', 'features', 'null');
-  })
-  .then(() => {
-    return copyFromCSV('styles', 'styles', 'null');
-  })
-  .then(() => {
-    return copyFromCSV('photos', 'photos', 'null');
-  })
-  .then(() => {
-    return copyFromCSV('skus', 'skus', 'null');
-  })
-  .then(() => {
-    return copyFromCSV('related', 'related', '0');
-  })
-  .then(() => {
-    console.log('Finished loading database');
-  })
-  .catch((error) => console.log(error));
+    .then(() => {
+      return copyFromCSV('features', 'features', 'null');
+    })
+    .then(() => {
+      return copyFromCSV('styles', 'styles', 'null');
+    })
+    .then(() => {
+      return copyFromCSV('photos', 'photos', 'null');
+    })
+    .then(() => {
+      return copyFromCSV('skus', 'skus', 'null');
+    })
+    .then(() => {
+      return copyFromCSV('related', 'related', '0');
+    })
+    .then(() => {
+      console.log('Finished loading database');
+    })
+    .catch((error) => console.log(error));
 };
 
 // loadDatabase();

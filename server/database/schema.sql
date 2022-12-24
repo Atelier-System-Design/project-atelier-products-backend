@@ -27,14 +27,14 @@ CREATE TABLE styles (
 
 CREATE TABLE photos (
   id INTEGER NOT NULL PRIMARY KEY,
-  styles_id INTEGER REFERENCES styles (id),
+  style_id INTEGER REFERENCES styles (id),
   url TEXT,
   thumbnail_url TEXT
 );
 
 CREATE TABLE skus (
   id INTEGER NOT NULL PRIMARY KEY,
-  styles_id INTEGER REFERENCES styles(id),
+  style_id INTEGER REFERENCES styles(id),
   size TEXT,
   quantity INTEGER
 );

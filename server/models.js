@@ -2,7 +2,7 @@ const db = require('./database/db.js');
 
 module.exports = {
   getAllProductsFromDB: (queryParams) => {
-    return db.query(`SELECT * FROM products LIMIT ${queryParams.count}`)
+    return db.query(`SELECT * FROM products ORDER BY id LIMIT ${queryParams.count}`)
       .then((result) => {
         return result.rows;
       })
@@ -11,70 +11,27 @@ module.exports = {
       })
   },
   getProductFromDB: (product_id) => {
-    let response;
-    return db.query(`SELECT * FROM products WHERE id=${product_id}`)
+    return db.query(`SELECT *, (SELECT json_agg(features) FROM (SELECT feature, value FROM features WHERE product_id=${product_id}) features) AS features FROM products WHERE id=${product_id}`)
       .then((result) => {
-        response = result.rows[0];
-        return db.query(`SELECT feature, value FROM features WHERE product_id=${product_id}`)
-      })
-      .then((result) => {
-        response.features = result.rows;
-        return response;
+        return result.rows[0];
       })
       .catch((error) => {
         return error;
       })
   },
   getStylesFromDB: (product_id) => {
-    let response = {
-      product_id
-    };
-    return db.query(`SELECT id as style_id, name, original_price, sale_price, default_style FROM styles WHERE product_id=${product_id}`)
+    return db.query(`SELECT id as product_id,
+    (SELECT json_agg(response) AS results FROM (SELECT id as style_id, name, original_price, sale_price, default_style AS "default?",
+    (SELECT json_agg(photos) AS photos FROM (SELECT thumbnail_url, url FROM photos WHERE style_id = styles.id) photos),
+    (SELECT json_object_agg(id, (json_build_object('quantity', quantity, 'size', size))) AS skus FROM skus WHERE style_id=styles.id)
+    FROM styles WHERE product_id=${product_id}) response)
+    FROM products WHERE id=${product_id}`)
       .then((result) => {
-        return new Promise ((resolve, reject) => {
-          response['results'] = result.rows
-          Promise.all(response.results.map((style) => {
-            return db.query(`SELECT thumbnail_url, url FROM photos WHERE style_id=${style.style_id}`)
-              .then(result => {
-                return result.rows
-              })
-          }))
-            .then((photosArray) => {
-              for (let i = 0; i < response.results.length; i++) {
-                response.results[i]['photos'] = photosArray[i]
-              }
-              resolve(response);
-            })
-            .catch((error) => reject(error));
-        })
-      })
-      .then(() => {
-        return new Promise ((resolve, reject) => {
-          Promise.all(response.results.map((style) => {
-            return db.query(`SELECT id, quantity, size FROM skus WHERE style_id=${style.style_id}`)
-              .then((result) => {
-                return result.rows
-              })
-          }))
-          .then((skuArray) => {
-            for (let i = 0; i < response.results.length; i++) {
-              response.results[i]['skus'] = {}
-              for (let j = 0; j < skuArray.length; j++) {
-                let quantSize = {
-                  quantity: skuArray[i][j].quantity,
-                  size: skuArray[i][j].size
-                }
-                response.results[i].skus[skuArray[i][j].id] = quantSize;
-              }
-            }
-            resolve(response);
-          })
-          .catch((error) => reject(error));
-        })
+        return result.rows[0];
       })
       .catch((error) => {
-        return (error);
-      });
+        return error;
+      })
   },
   getRelatedFromDB: (product_id) => {
     return db.query(`SELECT related_product_id FROM related WHERE current_product_id=${product_id}`)

@@ -1,8 +1,8 @@
 const db = require('./database/db.js');
 
 module.exports = {
-  getAllProductsFromDB: (queryParams) => {
-    return db.query(`SELECT * FROM products ORDER BY id LIMIT ${queryParams.count}`)
+  getAllProductsFromDB: (page, count) => {
+    return db.query(`SELECT * FROM products ORDER BY id LIMIT ${count} OFFSET ${(page * count) - count}`)
       .then((result) => {
         return result.rows;
       })

@@ -2,7 +2,9 @@ const models = require('./models.js');
 
 module.exports = {
   getAllProducts: (req, res) => {
-    models.getAllProductsFromDB(req.query)
+   const page = req.query.page || 1;
+   const count = req.query.count || 5;
+    models.getAllProductsFromDB(page, count)
       .then((result) => res.status(200).send(result))
       .catch((error) => res.status(500).send(error));
   },

@@ -44,3 +44,9 @@ CREATE TABLE related (
   current_product_id INTEGER REFERENCES products (id),
   related_product_id INTEGER REFERENCES products (id)
 );
+
+CREATE INDEX idx_features_pid on features(product_id);
+CREATE INDEX idx_styles_pid on styles(product_id);
+CREATE INDEX idx_photos_sid on photos(style_id);
+CREATE INDEX idx_skus_sid on skus(style_id);
+CREATE INDEX idx_related_pid on related(current_product_id);

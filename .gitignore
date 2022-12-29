@@ -3,3 +3,5 @@ config.js
 data
 .env
 client/dist
+newrelic.js
+newrelic_agent.log

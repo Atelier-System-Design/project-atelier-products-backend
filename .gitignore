@@ -5,3 +5,4 @@ data
 client/dist
 newrelic.js
 newrelic_agent.log
+.DS_Store

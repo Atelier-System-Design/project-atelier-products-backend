@@ -9,8 +9,8 @@ export const options = {
       rate: 1000,
       timeUnit: '1s', // 1000 iterations per second, i.e. 1000 RPS
       duration: '30s',
-      preAllocatedVUs: 200, // how large the initial pool of VUs would be
-      maxVUs: 300, // if the preAllocatedVUs are not enough, we can initialize more
+      preAllocatedVUs: 400, // how large the initial pool of VUs would be
+      maxVUs: 500, // if the preAllocatedVUs are not enough, we can initialize more
     },
   },
   thresholds: {
@@ -21,5 +21,5 @@ export const options = {
 
 export default function () {
   let product = randomIntBetween(1, 1000011);
-  const res = http.get(`http://localhost:3000/products/${product}`);
+  const res = http.get(`http://localhost:3000/products/${product}/related`);
 };

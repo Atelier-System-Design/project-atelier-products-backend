@@ -2,7 +2,7 @@ const db = require('./database/db.js');
 
 module.exports = {
   getAllProductsFromDB: (page, count) => {
-    return db.query(`SELECT * FROM products ORDER BY id LIMIT ${count} OFFSET ${(page * count) - count}`)
+    return db.query(`SELECT * FROM products WHERE id > ${(page - 1) * count} AND id < ${(page * count) + 1}`)
       .then((result) => {
         return result.rows;
       })

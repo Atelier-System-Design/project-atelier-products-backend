@@ -71,4 +71,3 @@ const loadDatabase = () => {
 };
 
 // loadDatabase();
-copyFromCSV('related', 'related', '0');

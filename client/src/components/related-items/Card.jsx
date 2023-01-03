@@ -32,7 +32,7 @@ const Card = ({ index, productId, currentProduct, setCurrentProduct, inOutfit, o
             if (error) {
               console.error(error);
             } else {
-              await request(`/reviews/meta?product_id=${productId}`, 'GET', {}, (error, metadata) => {
+              await request(`https://app-hrsei-api.herokuapp.com/api/fec2/hr-rfp/reviews/meta?product_id=${productId}`, 'GET', {}, (error, metadata) => {
                 if (error) {
                   console.error(error);
                 } else {

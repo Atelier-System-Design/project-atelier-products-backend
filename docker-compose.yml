@@ -7,16 +7,3 @@ services:
     working_dir: /project-atelier-products-backend
     volumes:
      - ./:/project-atelier-products-backend
-  db:
-    image: postgres
-    restart: always
-    volumes:
-     - products-data:/var/lib/postgresql/data
-    environment:
-      POSTGRES_USER: chris
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: products
-    ports:
-      - 3030:5432
-volumes:
-  products-data:

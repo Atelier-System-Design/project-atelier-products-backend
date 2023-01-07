@@ -7,7 +7,7 @@ const path = require('path');
 const router = require('./routes');
 const db = require('./database/db.js')
 
-app.use(morgan('dev'));
+// app.use(morgan('dev'));
 app.use(cors());
 app.use(express.json());
 

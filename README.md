@@ -28,25 +28,25 @@ After optimizations to database indexing, queries, and pagination method respons
 
 ### Deployment
 
-After deploying both the server and database to AWS EC2 instances stress testing with loader.io demonstrated that the service was capable of handling 1000 RPS with a 92 ms response time and 0% error rate.
+After deploying both the server and database to AWS EC2 instances stress testing with loader.io demonstrated that the system was capable of handling 1000 RPS with a 92 ms response time and 0% error rate.
 
 ![1000 rps](https://user-images.githubusercontent.com/93167286/214458788-84ad2491-79dd-409a-b896-95e7e0ea5df8.png)
 
-However, the service began to slow down significantly at a 2000 RPS load with an average response time of 3851 ms and > 1% error rate.
+However, the system began to slow down significantly at a 2000 RPS load with an average response time of 3851 ms and > 1% error rate.
 
 ![2000 rps](https://user-images.githubusercontent.com/93167286/214459142-cb9a0182-0360-4b75-9e3c-c822c3fd0455.png)
 
 ### Load Balancing and Caching
 
-In pursuit of the 5000 RPS goal an additional EC2 instance was deployed utilizing an NGINX load balancer along with caching. With these additions the service was able to handle a 2000 RPS load with an average response time of 67 ms and < 0.1% error rate.
+In pursuit of the 5000 RPS goal an additional EC2 instance was deployed utilizing an NGINX load balancer along with caching. With these additions the system was able to handle a 2000 RPS load with an average response time of 67 ms and < 0.1% error rate.
 
 ![2000 rps w: cache](https://user-images.githubusercontent.com/93167286/214459782-a6a93ab6-f5a4-493e-a53c-f5fa9b4b1281.png)
 
-Finally, two more EC2 instances were added and the service was able to reach the 5000 RPS goal with an average response time of 64 ms and < 1% error rate.
+Finally, two more EC2 instances were added and the system was able to reach the 5000 RPS goal with an average response time of 64 ms and < 1% error rate.
 
 ![5000 rps](https://user-images.githubusercontent.com/93167286/214460127-6b721813-d5e5-48fe-a3bd-1c7390ecc545.png)
 
 ### Further Optimizations
 
-To increase performance of the service in the future I would consider vertically scaling to a more powerful AWS instance as well as further optimizing the database queries. 
+To increase performance of the system in the future I would consider vertically scaling to a more powerful AWS instance as well as further optimizing the database queries. 
 
